@@ -3,7 +3,9 @@ var bodyParser = require('body-parser')
 var mongoose = require('mongoose');
 
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/beers');
+mongoose.connect('mongodb://localhost/beers', {
+  useMongoClient: true
+});
 
 var app = express();
 
@@ -33,24 +35,8 @@ app.get('/beers', function (req, res, next) {
 
 // 2 - Add A Beer
 app.post('/beers', function (req, res, next) {
-  var myBeer = new Beer({
-    name: req.body.name,
-    style: req.body.style,
-    image_url: req.body.image_url,
-    abv: req.body.abv,
-    ratings: [req.body.ratings]
-  });
+  var myBeer = new Beer(req.body);
   myBeer.save(routeHandler(res, next));
-  // Beer.findOne({
-  //   name: myBeer.name
-  // }, function (err, data) {
-  //   if (!data) {
-  //     myBeer.save(routeHandler(res, next));
-  //   } else {
-  //     data.ratings.push(req.body.ratings);
-  //     data.save(routeHandler(res, next));
-  //   }
-  // });
 });
 
 // 3 - Delete Beer
@@ -77,11 +63,16 @@ app.put('/beers/:beerID', function (req, res, next) {
 app.post('/beers/:beerID/ratings', function (req, res, next) {
   Beer.findById(req.params.beerID, function (err, data) {
     data.ratings.push(req.body.ratings);
+    if (req.body.ratingsTotal > 0) {
+      data.avgRating = ((req.body.ratingsTotal + parseInt(req.body.ratings)) / data.ratings.length);
+    } else {
+      data.avgRating = req.body.ratings;
+    }
     data.save(routeHandler(res, next));
   });
 });
 
-// error handler to catch 404 and forward to main error handler
+// error handler to catch 404 route errors and forward to main error handler
 app.use(function (req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
