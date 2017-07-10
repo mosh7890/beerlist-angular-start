@@ -1,4 +1,11 @@
-<div class="col-lg-3">
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <ul class="nav navbar-nav">
+            <li><a ui-sref="home">Home<span class="glyphicon glyphicon-home" aria-hidden="true"></span></a></li>
+        </ul>
+    </div>
+</nav>
+<div class="col-lg-4">
     <div class="beerInReview">
         <div class="beerImage">
             <img ng-src="{{beer.image_url}}" />
@@ -10,29 +17,16 @@
                 <h3>Style:</h3>
                 <p class='beerDataP'>{{beer.style}},</p>
                 <h3>ABV:</h3>
-                <p class='beerDataP'>{{beer.abv}}</p>
+                <p class='beerDataP'>{{beer.abv}}.</p>
             </div>
             <div>
                 <h3>Average Rating:</h3>
-                <p class='beerDataP'>{{beer.avgRating.toFixed(1)}}.</p>
+                <p class='beerDataP'>{{beer.avgRating.toFixed(1)}}</p>
             </div>
         </div>
     </div>
 </div>
 <div class="col-lg-6 col-lg-offset-1">
-    <h1>
-        <a class="btn btn-primary" ui-sref="home">Home</a>
-    </h1>
-    <div class="page-header">
-        <!--<h3>Name:</h3>
-        <p class='beerDataP'>{{beer.name}},</p>
-        <h3>Style:</h3>
-        <p class='beerDataP'>{{beer.style}},</p>
-        <h3>ABV:</h3>
-        <p class='beerDataP'>{{beer.abv}}</p>
-        <h3>Average Rating:</h3>
-        <p class='beerDataP'>{{beer.avgRating.toFixed(1)}}.</p>-->
-    </div>
     <div>
         <ul>
             <li ng-repeat="review in beer.reviews track by $index">{{ review.username }}:
