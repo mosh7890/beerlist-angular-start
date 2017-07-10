@@ -1,0 +1,69 @@
+<div class="col-lg-6 col-lg-offset-3" ng-show='showAddForm'>
+    <h1 class="text-center">BeerList</h1>
+    <div class="page-header">
+    </div>
+    <!-- render beers here -->
+    <form name='myForm' ng-submit="addBeer()">
+        <h1 class='text-center'>Add a New Beer</h1>
+        <div class="form-group">
+            <input type="text" name='myInput' class="form-control" placeholder="Beer Name" ng-model="temp.name"></input>
+        </div>
+        <div class="form-group">
+            <input type="text" name='myInput' class="form-control" placeholder="Style" ng-model="temp.style"></input>
+        </div>
+        <div class="form-group">
+            <input type="text" name='myInput' class="form-control" placeholder="ABV" ng-model="temp.abv"></input>
+        </div>
+        <div class="form-group">
+            <input type="text" name='myInput' class="form-control" placeholder="Image URL" ng-model="temp.image_url"></input>
+        </div>
+        <button type="submit" class="btn btn-outline-default addBeerButton">Add</button>
+        <button type="button" class="btn btn-outline-default clearAddBeerButton" ng-click="clearAddBeer(); $event.stopPropagation()">Clear</button>
+    </form>
+</div>
+<div class="col-lg-10 col-lg-offset-1" ng-show='showBeers'>
+    <button type="button" class="btn btn-outline-default sortBeersButton" ng-click="sortBeers()">Sort Beers</button>
+    <div class='beers text-center'>
+        <div class="beer" ng-repeat="beer in beerList track by $index">
+            <div class="beerImage" ng-click="editBeerShow()">
+                <img ng-src="{{beer.image_url}}" />
+            </div>
+            <div class="beerData">
+                <div>
+                    <h3>Name:</h3>
+                    <p class='beerDataP'>{{beer.name}},</p>
+                    <h3>Style:</h3>
+                    <p class='beerDataP'>{{beer.style}},</p>
+                    <h3>ABV:</h3>
+                    <p class='beerDataP'>{{beer.abv}}</p>
+                </div>
+                <div>
+                    <h3>Average Rating:</h3>
+                    <p class='beerDataP'>{{beer.avgRating.toFixed(1)}}.</p>
+                </div>
+                <button type="button" class="btn btn-primary addBeerRatingButton" ng-click="addRating(); $event.stopPropagation()">Add Rating</button>
+                <a class="btn btn-primary" ui-sref="beer({beerID: beer._id, beerParam: beer})">Reviews</a>
+            </div>
+            <button type="button" class="btn btn-danger removeBeerButton" ng-click="removeBeer(); $event.stopPropagation()">Remove</button>
+        </div>
+    </div>
+</div>
+<div class="col-lg-6 col-lg-offset-3" ng-show='showEditForm'>
+    <h1 class="text-center">Edit Beer</h1>
+    <form name='myForm' ng-submit="editBeer()">
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Beer Name" ng-model="temp2.name"></input>
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Style" ng-model="temp2.style"></input>
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="ABV" ng-model="temp2.abv"></input>
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Image URL" ng-model="temp2.image_url"></input>
+        </div>
+        <button type="submit" class="btn btn-primary editBeerButton">Edit</button>
+        <button type="button" class="btn btn-danger cancelEditButton" ng-click="cancelEdit(); $event.stopPropagation()">Cancel</button>
+    </form>
+</div>

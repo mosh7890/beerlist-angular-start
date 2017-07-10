@@ -44,7 +44,20 @@ app.delete('/beers/:beerID', function (req, res, next) {
   Beer.findByIdAndRemove(req.params.beerID, routeHandler(res, next));
 });
 
-// 4 - Update A Beer
+// 4 - Add Beer Ratings
+app.post('/beers/:beerID/ratings', function (req, res, next) {
+  Beer.findById(req.params.beerID, function (err, data) {
+    data.ratings.push(req.body.ratings);
+    if (req.body.ratingsTotal > 0) {
+      data.avgRating = ((req.body.ratingsTotal + parseInt(req.body.ratings)) / data.ratings.length);
+    } else {
+      data.avgRating = req.body.ratings;
+    }
+    data.save(routeHandler(res, next));
+  });
+});
+
+// 5 - Update Beer Info (name, style, image, abv)
 app.put('/beers/:beerID', function (req, res, next) {
   var update = {
     $set: {
@@ -59,18 +72,35 @@ app.put('/beers/:beerID', function (req, res, next) {
   }, routeHandler(res, next));
 });
 
-// 5 - Rate an Existing Beer 
-app.post('/beers/:beerID/ratings', function (req, res, next) {
-  Beer.findById(req.params.beerID, function (err, data) {
-    data.ratings.push(req.body.ratings);
-    if (req.body.ratingsTotal > 0) {
-      data.avgRating = ((req.body.ratingsTotal + parseInt(req.body.ratings)) / data.ratings.length);
-    } else {
-      data.avgRating = req.body.ratings;
+// 6 - Add Beer Reviews
+app.post('/beers/:beerID/reviews', function (req, res, next) {
+  var update = {
+    $push: {
+      reviews: req.body
     }
-    data.save(routeHandler(res, next));
-  });
+  };
+  Beer.findByIdAndUpdate(req.params.beerID, update, {
+    new: true
+  }, routeHandler(res, next));
 });
+
+// 7 - Delete Beer Reviews
+app.delete('/beers/:beerID/reviews/:reviewID', function (req, res, next) {
+  var update = {
+    $pull: {
+      reviews: {
+        _id: req.params.reviewID
+      }
+    }
+  };
+  Beer.findByIdAndUpdate(req.params.beerID, update, {
+    new: true
+  }, routeHandler(res, next));
+});
+
+app.all('*', function (req, res) {
+  res.sendFile(__dirname + "/public/index.html")
+})
 
 // error handler to catch 404 route errors and forward to main error handler
 app.use(function (req, res, next) {

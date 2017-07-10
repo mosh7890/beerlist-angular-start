@@ -1,0 +1,54 @@
+<div class="col-lg-3">
+    <div class="beerInReview">
+        <div class="beerImage">
+            <img ng-src="{{beer.image_url}}" />
+        </div>
+        <div class="beerData">
+            <div>
+                <h3>Name:</h3>
+                <p class='beerDataP'>{{beer.name}},</p>
+                <h3>Style:</h3>
+                <p class='beerDataP'>{{beer.style}},</p>
+                <h3>ABV:</h3>
+                <p class='beerDataP'>{{beer.abv}}</p>
+            </div>
+            <div>
+                <h3>Average Rating:</h3>
+                <p class='beerDataP'>{{beer.avgRating.toFixed(1)}}.</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-lg-6 col-lg-offset-1">
+    <h1>
+        <a class="btn btn-primary" ui-sref="home">Home</a>
+    </h1>
+    <div class="page-header">
+        <!--<h3>Name:</h3>
+        <p class='beerDataP'>{{beer.name}},</p>
+        <h3>Style:</h3>
+        <p class='beerDataP'>{{beer.style}},</p>
+        <h3>ABV:</h3>
+        <p class='beerDataP'>{{beer.abv}}</p>
+        <h3>Average Rating:</h3>
+        <p class='beerDataP'>{{beer.avgRating.toFixed(1)}}.</p>-->
+    </div>
+    <div>
+        <ul>
+            <li ng-repeat="review in beer.reviews track by $index">{{ review.username }}:
+                <p class='beerDataP'>{{ review.review}}</p>
+                <button type="button" class="btn btn-danger removeBeerButton" ng-click="removeReview(); $event.stopPropagation()">Remove</button>
+            </li>
+        </ul>
+    </div>
+    <form name='myForm' ng-submit="addReview()">
+        <h2>Add A Review!</h2>
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Username" ng-model="temp.username"></input>
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Your Review" ng-model="temp.review"></input>
+        </div>
+        <button type="submit" class="btn btn-primary addReviewButton">Submit</button>
+    </form>
+</div>

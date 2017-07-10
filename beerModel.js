@@ -2,6 +2,12 @@ var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema;
 
+var reviewSchema = new Schema({
+    username: String,
+    review: String,
+});
+
+
 var beerSchema = new Schema({
     name: String,
     style: String,
@@ -9,6 +15,7 @@ var beerSchema = new Schema({
     abv: Number,
     ratings: [Number],
     avgRating: Number,
+    reviews: [reviewSchema],
 });
 
 var Beer = mongoose.model('Beer', beerSchema);

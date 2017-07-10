@@ -9,7 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "angular": "^1.6.2",
+    "@uirouter/angularjs": "^1.0.5",
+    "@uirouter/visualizer": "latest",
     "body-parser": "^1.17.2",
     "bootstrap": "^3.3.7",
     "express": "^4.15.3",

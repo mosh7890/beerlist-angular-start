@@ -19,7 +19,7 @@ app.controller('mainController', function ($scope, beerFactory) {
     // Create Empty Beer List
     $scope.beerList = [];
 
-    // Fill Beer List
+    // 1 - Get All Beers
     beerFactory.getBeerList()
         .then(function (beers) {
             $scope.beerList = beers;
@@ -28,7 +28,7 @@ app.controller('mainController', function ($scope, beerFactory) {
             console.log(error)
         });
 
-    // Add a Beer to List
+    // 2 - Add A Beer
     $scope.addBeer = function () {
         var newBeer = {
             name: this.temp.name,
@@ -37,6 +37,7 @@ app.controller('mainController', function ($scope, beerFactory) {
             abv: this.temp.abv,
             ratings: [],
             avgRating: 0,
+            comments: [],
         };
 
         beerFactory.addBeer(newBeer)
@@ -51,7 +52,7 @@ app.controller('mainController', function ($scope, beerFactory) {
             });
     };
 
-    // Remove a Beer from List
+    // 3 - Delete Beer
     $scope.removeBeer = function () {
         var index = this.$index;
 
@@ -65,7 +66,7 @@ app.controller('mainController', function ($scope, beerFactory) {
             });
     };
 
-    // Add a Rating to Individual Beer
+    // 4 - Add Beer Ratings
     $scope.addRating = function () {
         var newRating = {
             ratings: prompt('Enter A Rating Between 1 and 5'),
@@ -96,7 +97,7 @@ app.controller('mainController', function ($scope, beerFactory) {
         }
     }
 
-    // Sorting Flag (Up or Down)
+    // Sorting Flag
     var flag = false;
 
     // Sort Beer List By Rating
@@ -115,7 +116,7 @@ app.controller('mainController', function ($scope, beerFactory) {
         };
     }
 
-    // Edit a Beer
+    // 5 - Update Beer Info (name, style, image, abv)
     $scope.editBeerShow = function () {
         $scope.showAddForm = false;
         $scope.showBeers = false;
@@ -134,14 +135,14 @@ app.controller('mainController', function ($scope, beerFactory) {
         $scope.temp2 = angular.copy(defaultEditForm);
 
         $scope.editBeer = function () {
-            var newishBeer = {
+            var editedBeer = {
                 name: this.temp2.name,
                 style: this.temp2.style,
                 image_url: this.temp2.image_url,
                 abv: this.temp2.abv,
             };
 
-            beerFactory.editBeer(newishBeer, beerID)
+            beerFactory.editBeer(editedBeer, beerID)
                 .then(function (beer) {
                     $scope.beerList[index] = beer;
                     $scope.showAddForm = true;
@@ -155,12 +156,12 @@ app.controller('mainController', function ($scope, beerFactory) {
         }
     }
 
-    //Clear Add Beer Form
+    // Clear Add Beer Form
     $scope.clearAddBeer = function () {
         $scope.temp = angular.copy(blankForm);
     }
 
-    //Cancel the Beer Edit
+    // Cancel the Beer Edit
     $scope.cancelEdit = function () {
         $scope.showAddForm = true;
         $scope.showBeers = true;
