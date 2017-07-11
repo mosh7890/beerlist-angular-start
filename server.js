@@ -9,7 +9,7 @@ var beerRoutes = require('./routes/beerRoutes');
 var userRoutes = require('./routes/userRoutes');
 
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/beers', {
+mongoose.connect(process.env.CONNECTION_STRING||'mongodb://localhost/beers', {
   useMongoClient: true
 });
 
@@ -63,6 +63,6 @@ app.use(function (err, req, res, next) {
   });
 });
 
-app.listen(8000, function () {
+app.listen(process.env.PORT || 8000, function () {
   console.log("yo yo yo, on 8000!!")
 });
