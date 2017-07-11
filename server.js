@@ -1,6 +1,12 @@
 var express = require('express');
-var bodyParser = require('body-parser')
+var expressSession = require('express-session');
+var bodyParser = require('body-parser');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
 var mongoose = require('mongoose');
+var User = require("./models/userModel");
+var beerRoutes = require('./routes/beerRoutes');
+var userRoutes = require('./routes/userRoutes');
 
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/beers', {
@@ -9,8 +15,6 @@ mongoose.connect('mongodb://localhost/beers', {
 
 var app = express();
 
-var Beer = require('./beerModel.js');
-
 app.use(express.static('public'));
 app.use(express.static('node_modules'));
 app.use(bodyParser.json());
@@ -18,89 +22,29 @@ app.use(bodyParser.urlencoded({
   extended: false
 }));
 
-// Handles Success / Failure , and Returns Data
-var routeHandler = function (res, next) {
-  return function (err, data) {
-    if (err) {
-      return next(err);
-    }
-    res.send(data);
-  }
-}
+// Configure passport and session middleware
+app.use(expressSession({
+  secret: 'thisIsASecret',
+  resave: false,
+  saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
-// 1 - Get All Beers
-app.get('/beers', function (req, res, next) {
-  Beer.find(routeHandler(res, next));
+// Configure passport-local to use user model for authentication
+passport.use(User.createStrategy()); //Thanks to p-l-m there is no need to create a local strategy
+passport.serializeUser(User.serializeUser()); //also it helps here
+passport.deserializeUser(User.deserializeUser()); //and here
+
+//This tells the server that when a request comes into '/beers'
+//that it should use the routes in 'beerRoutes'
+//and those are in our new beerRoutes.js file
+app.use('/beers', beerRoutes);
+app.use('/users', userRoutes);
+
+app.all('[^.]+', function (req, res) {
+  res.sendFile(__dirname + "/public/index.html");
 });
-
-// 2 - Add A Beer
-app.post('/beers', function (req, res, next) {
-  var myBeer = new Beer(req.body);
-  myBeer.save(routeHandler(res, next));
-});
-
-// 3 - Delete Beer
-app.delete('/beers/:beerID', function (req, res, next) {
-  Beer.findByIdAndRemove(req.params.beerID, routeHandler(res, next));
-});
-
-// 4 - Add Beer Ratings
-app.post('/beers/:beerID/ratings', function (req, res, next) {
-  Beer.findById(req.params.beerID, function (err, data) {
-    data.ratings.push(req.body.ratings);
-    if (req.body.ratingsTotal > 0) {
-      data.avgRating = ((req.body.ratingsTotal + parseInt(req.body.ratings)) / data.ratings.length);
-    } else {
-      data.avgRating = req.body.ratings;
-    }
-    data.save(routeHandler(res, next));
-  });
-});
-
-// 5 - Update Beer Info (name, style, image, abv)
-app.put('/beers/:beerID', function (req, res, next) {
-  var update = {
-    $set: {
-      name: req.body.name,
-      style: req.body.style,
-      image_url: req.body.image_url,
-      abv: req.body.abv
-    }
-  };
-  Beer.findByIdAndUpdate(req.params.beerID, update, {
-    new: true
-  }, routeHandler(res, next));
-});
-
-// 6 - Add Beer Reviews
-app.post('/beers/:beerID/reviews', function (req, res, next) {
-  var update = {
-    $push: {
-      reviews: req.body
-    }
-  };
-  Beer.findByIdAndUpdate(req.params.beerID, update, {
-    new: true
-  }, routeHandler(res, next));
-});
-
-// 7 - Delete Beer Reviews
-app.delete('/beers/:beerID/reviews/:reviewID', function (req, res, next) {
-  var update = {
-    $pull: {
-      reviews: {
-        _id: req.params.reviewID
-      }
-    }
-  };
-  Beer.findByIdAndUpdate(req.params.beerID, update, {
-    new: true
-  }, routeHandler(res, next));
-});
-
-app.all('*', function (req, res) {
-  res.sendFile(__dirname + "/public/index.html")
-})
 
 // error handler to catch 404 route errors and forward to main error handler
 app.use(function (req, res, next) {

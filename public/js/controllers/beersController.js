@@ -1,4 +1,4 @@
-app.controller('mainController', function ($scope, beerFactory) {
+app.controller('beersController', function ($scope, beerFactory) {
 
     //  Show / Hide Divs
     $scope.showAddForm = true;
