@@ -1,14 +1,3 @@
-<nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container-fluid">
-        <ul class="nav navbar-nav">
-            <li><a ui-sref="home">Beers<span class="glyphicon glyphicon-home" aria-hidden="true"></span></a></li>
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-            <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-            <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-        </ul>
-    </div>
-</nav>
 <div class="col-lg-4">
     <div class="beerInReview">
         <div class="beerImage">
@@ -42,7 +31,7 @@
     <form name='myForm' ng-submit="addReview()">
         <h2>Add A Review!</h2>
         <div class="form-group">
-            <input type="text" class="form-control" placeholder="Username" ng-model="temp.username"></input>
+            <input type="text" class="form-control" placeholder="Username" ng-model="currentUser.username"></input>
         </div>
         <div class="form-group">
             <input type="text" class="form-control" placeholder="Your Review" ng-model="temp.review"></input>

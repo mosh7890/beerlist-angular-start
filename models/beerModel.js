@@ -1,12 +1,10 @@
 var mongoose = require('mongoose');
-
 var Schema = mongoose.Schema;
 
 var reviewSchema = new Schema({
     username: String,
     review: String,
 });
-
 
 var beerSchema = new Schema({
     name: String,

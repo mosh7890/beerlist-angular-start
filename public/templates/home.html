@@ -1,20 +1,9 @@
-<nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container-fluid">
-        <ul class="nav navbar-nav">
-            <li><a href="#">Beers<span class="glyphicon glyphicon-home" aria-hidden="true"></span></a></li>
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-            <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-            <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-        </ul>
-    </div>
-</nav>
 <div class="col-lg-6 col-lg-offset-3" ng-show='showAddForm'>
     <h1 class="text-center">BeerList</h1>
     <div class="page-header">
     </div>
     <!-- render beers here -->
-    <form name='myForm' ng-submit="addBeer()">
+    <form name='myForm' ng-show="currentUser.username" ng-submit="addBeer()">
         <h1 class='text-center'>Add a New Beer</h1>
         <div class="form-group">
             <input type="text" name='myInput' class="form-control" placeholder="Beer Name" ng-model="temp.name"></input>
@@ -52,10 +41,10 @@
                     <h3>Average Rating:</h3>
                     <p class='beerDataP'>{{beer.avgRating.toFixed(1)}}.</p>
                 </div>
-                <button type="button" class="btn btn-primary addBeerRatingButton" ng-click="addRating(); $event.stopPropagation()">Add Rating</button>
+                <button type="button" class="btn btn-primary addBeerRatingButton" ng-show="currentUser.username" ng-click="addRating(); $event.stopPropagation()">Add Rating</button>
                 <a class="btn btn-primary" ui-sref="beer({beerID: beer._id, beerParam: beer})">Reviews</a>
             </div>
-            <button type="button" class="btn btn-danger removeBeerButton" ng-click="removeBeer(); $event.stopPropagation()">Remove</button>
+            <button type="button" class="btn btn-danger removeBeerButton" ng-show="currentUser.username" ng-click="removeBeer(); $event.stopPropagation()">Remove</button>
         </div>
     </div>
 </div>

@@ -5,7 +5,7 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
     $stateProvider
         .state('home', {
             url: '/home',
-            controller: 'mainController',
+            controller: 'beersController',
             templateUrl: '/templates/home.html'
         })
         .state('beer', {
@@ -14,7 +14,17 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
                 beerParam: null
             },
             controller: 'beerController',
-            templateUrl: '/templates/beer.html',
+            templateUrl: '/templates/beer.html'
+        })
+        .state('register', {
+            url: '/register',
+            controller: 'authController',
+            templateUrl: '/templates/register.html'
+        })
+        .state('login', {
+            url: '/login',
+            controller: 'authController',
+            templateUrl: '/templates/login.html'
         });
     $urlRouterProvider.otherwise('/home');
 }]);

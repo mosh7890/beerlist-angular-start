@@ -16,7 +16,7 @@ app.controller('beerController', function ($scope, $stateParams, beerFactory) {
     // 6 - Add Beer Reviews
     $scope.addReview = function () {
         var newReview = {
-            username: this.temp.username,
+            username: this.$parent.currentUser.username,
             review: this.temp.review
         };
 
