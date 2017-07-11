@@ -3,6 +3,11 @@ app.controller('masterController', function ($scope, authFactory) {
     $scope.currentUser = authFactory.currentUser;
 
     $scope.logout = function () {
-        authFactory.logout($scope.currentUser);
+        authFactory.logout($scope.currentUser).then(function (beers) {
+                $state.go('home');
+            })
+            .catch(function (error) {
+                alert(error.data.message);
+            });
     }
 });

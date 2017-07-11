@@ -24,11 +24,11 @@
         <ul class='reviews'>
             <li ng-repeat="review in beer.reviews track by $index">{{ review.username }}:
                 <p class='beerDataP'>{{ review.review}}</p>
-                <button type="button" class="btn btn-danger removeBeerButton" ng-click="removeReview(); $event.stopPropagation()">Remove</button>
+                <button type="button" class="btn btn-danger removeBeerButton" ng-show="currentUser.username" ng-click="removeReview(); $event.stopPropagation()">Remove</button>
             </li>
         </ul>
     </div>
-    <form name='myForm' ng-submit="addReview()">
+    <form name='myForm' ng-show="currentUser.username" ng-submit="addReview()">
         <h2>Add A Review!</h2>
         <div class="form-group">
             <input type="text" class="form-control" placeholder="Username" ng-model="currentUser.username"></input>
