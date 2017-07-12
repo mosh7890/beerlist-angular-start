@@ -22,8 +22,8 @@
 <div class="col-lg-6 col-lg-offset-1">
     <div>
         <ul class='reviews'>
-            <li ng-repeat="review in beer.reviews track by $index">{{ review.username }}:
-                <p class='beerDataP'>{{ review.review}}</p>
+            <li ng-repeat="review in beer.reviews track by $index">{{review.username}}:
+                <p class='beerDataP'>{{review.review}}</p>
                 <button type="button" class="btn btn-danger removeBeerButton" ng-show="currentUser.username" ng-click="removeReview(); $event.stopPropagation()">Remove</button>
             </li>
         </ul>
@@ -31,7 +31,7 @@
     <form name='myForm' ng-show="currentUser.username" ng-submit="addReview()">
         <h2>Add A Review!</h2>
         <div class="form-group">
-            <input type="text" class="form-control" placeholder="Username" ng-model="currentUser.username"></input>
+            <input type="text" class="form-control" ng-model="currentUser.username"></input>
         </div>
         <div class="form-group">
             <input type="text" class="form-control" placeholder="Your Review" ng-model="temp.review"></input>

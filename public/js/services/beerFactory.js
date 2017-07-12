@@ -8,7 +8,7 @@ app.factory('beerFactory', function ($http) {
             });
     }
 
-    //* 2 - Add A Beer
+    //* 2 - Add a Beer
     var addBeer = function (data) {
         return $http.post('/beers', data)
             .then(function (response) {
@@ -16,7 +16,7 @@ app.factory('beerFactory', function ($http) {
             });
     }
 
-    //* 3 - Delete Beer
+    //* 3 - Delete a Beer
     var removeBeer = function (beerID) {
         return $http.delete('/beers/' + beerID)
             .then(function (response) {

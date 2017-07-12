@@ -1,30 +1,19 @@
 app.controller('beerController', function ($scope, $stateParams, beerFactory) {
 
-    // Create a Blank Form Template
-    var blankForm = {
-        name: "",
-        style: "",
-        abv: "",
-        image_url: "",
-    }
-
-    //  Sets Temp's Values in HTML?
-    $scope.temp = angular.copy(blankForm);
-
     $scope.beer = $stateParams.beerParam;
 
-    // 6 - Add Beer Reviews
+    //* 6 - Add Beer Reviews
     $scope.addReview = function () {
         var newReview = {
-            username: this.$parent.currentUser.username,
+            username: $scope.currentUser.username,
             review: this.temp.review
         };
 
         beerFactory.addReview(newReview, this.beer._id)
             .then(function (beer) {
                 $scope.beer = beer;
-                $scope.myForm.$setPristine(); // No clue wtf this does
-                $scope.temp = angular.copy(blankForm);
+                $scope.myForm.$setPristine();
+                $scope.temp.review = '';
             })
             .catch(function (error) {
                 console.log(error)
@@ -32,7 +21,7 @@ app.controller('beerController', function ($scope, $stateParams, beerFactory) {
             });
     }
 
-    // 7 - Delete Beer Reviews
+    //* 7 - Delete Beer Reviews
     $scope.removeReview = function () {
         var reviewIndex = this.$index;
 

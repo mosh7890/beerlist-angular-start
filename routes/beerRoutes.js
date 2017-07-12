@@ -30,13 +30,13 @@ router.get('/', function (req, res, next) {
     Beer.find(routeHandler(res, next));
 });
 
-//* 2 - Add A Beer
+//* 2 - Add a Beer
 router.post('/', ensureAuthenticated, function (req, res, next) {
     var myBeer = new Beer(req.body);
     myBeer.save(routeHandler(res, next));
 });
 
-//* 3 - Delete Beer
+//* 3 - Delete a Beer
 router.delete('/:beerID', ensureAuthenticated, function (req, res, next) {
     Beer.findByIdAndRemove(req.params.beerID, routeHandler(res, next));
 });

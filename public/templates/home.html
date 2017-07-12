@@ -2,7 +2,6 @@
     <h1 class="text-center">BeerList</h1>
     <div class="page-header">
     </div>
-    <!-- render beers here -->
     <form name='myForm' ng-show="currentUser.username" ng-submit="addBeer()">
         <h1 class='text-center'>Add a New Beer</h1>
         <div class="form-group">
@@ -25,7 +24,7 @@
     <button type="button" class="btn btn-outline-default sortBeersButton" ng-click="sortBeers()">Sort Beers</button>
     <div class='beers text-center'>
         <div class="beer" ng-repeat="beer in beerList track by $index">
-            <div class="beerImage" ng-click="editBeerShow()">
+            <div class="beerImage" ng-click="currentUser.username && editBeerShow()">
                 <img ng-src="{{beer.image_url}}" />
             </div>
             <div class="beerData">

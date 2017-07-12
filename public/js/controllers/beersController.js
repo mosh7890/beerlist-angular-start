@@ -1,11 +1,11 @@
 app.controller('beersController', function ($scope, beerFactory) {
 
-    //  Show / Hide Divs
+    //*  Show / Hide Divs
     $scope.showAddForm = true;
     $scope.showBeers = true;
     $scope.showEditForm = false;
 
-    // Create a Blank Form Template
+    //* Create a Blank Form Template
     var blankForm = {
         name: "",
         style: "",
@@ -13,13 +13,10 @@ app.controller('beersController', function ($scope, beerFactory) {
         image_url: "",
     }
 
-    //  Sets Temp's Values in HTML?
-    $scope.temp = angular.copy(blankForm);
-
-    // Create Empty Beer List
+    //* Create Empty Beer List
     $scope.beerList = [];
 
-    // 1 - Get All Beers
+    //* 1 - Get All Beers
     beerFactory.getBeerList()
         .then(function (beers) {
             $scope.beerList = beers;
@@ -28,7 +25,7 @@ app.controller('beersController', function ($scope, beerFactory) {
             console.log(error)
         });
 
-    // 2 - Add A Beer
+    //* 2 - Add a Beer
     $scope.addBeer = function () {
         var newBeer = {
             name: this.temp.name,
@@ -43,7 +40,7 @@ app.controller('beersController', function ($scope, beerFactory) {
         beerFactory.addBeer(newBeer)
             .then(function (beer) {
                 $scope.beerList.push(beer);
-                $scope.myForm.$setPristine(); // No clue wtf this does
+                $scope.myForm.$setPristine(); //* No clue wtf this does
                 $scope.temp = angular.copy(blankForm);
             })
             .catch(function (error) {
@@ -52,7 +49,7 @@ app.controller('beersController', function ($scope, beerFactory) {
             });
     };
 
-    // 3 - Delete Beer
+    //* 3 - Delete a Beer
     $scope.removeBeer = function () {
         var index = this.$index;
 
@@ -66,7 +63,7 @@ app.controller('beersController', function ($scope, beerFactory) {
             });
     };
 
-    // 4 - Add Beer Ratings
+    //* 4 - Add Beer Ratings
     $scope.addRating = function () {
         var newRating = {
             ratings: prompt('Enter A Rating Between 1 and 5'),
@@ -87,7 +84,7 @@ app.controller('beersController', function ($scope, beerFactory) {
         }
     }
 
-    // Get Average Rating for Individual Beers
+    //* Get Average Rating for Individual Beers
     $scope.getRatingsTotal = function (data) {
         function getSum(total, num) {
             return total + num;
@@ -97,10 +94,10 @@ app.controller('beersController', function ($scope, beerFactory) {
         }
     }
 
-    // Sorting Flag
+    //* Sorting Flag
     var flag = false;
 
-    // Sort Beer List By Rating
+    //* Sort Beer List By Rating
     $scope.sortBeers = function () {
         $scope.beerList.sort(dynamicSort('avgRating', flag));
         flag = !flag;
@@ -116,7 +113,7 @@ app.controller('beersController', function ($scope, beerFactory) {
         };
     }
 
-    // 5 - Update Beer Info (name, style, image, abv)
+    //* 5 - Update Beer Info (name, style, image, abv)
     $scope.editBeerShow = function () {
         $scope.showAddForm = false;
         $scope.showBeers = false;
@@ -156,12 +153,12 @@ app.controller('beersController', function ($scope, beerFactory) {
         }
     }
 
-    // Clear Add Beer Form
+    //* Clear Add Beer Form
     $scope.clearAddBeer = function () {
         $scope.temp = angular.copy(blankForm);
     }
 
-    // Cancel the Beer Edit
+    //* Cancel the Beer Edit
     $scope.cancelEdit = function () {
         $scope.showAddForm = true;
         $scope.showBeers = true;
