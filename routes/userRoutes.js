@@ -3,18 +3,7 @@ var router = express.Router();
 var passport = require('passport');
 var User = require("../models/userModel");
 
-// Handles Success / Failure , and Returns Data
-// var routeHandler = function (res, next) {
-//     return function (err, data) {
-//         if (err) {
-//             return next(err);
-//         }
-//         res.send(data);
-//     }
-// }
-
-//  The /User routes Go Here
-
+//*  The /User routes Go Here
 //* 1 - Register New Users
 router.post('/register', function (req, res, next) {
     User.register(new User({

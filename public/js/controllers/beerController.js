@@ -2,10 +2,18 @@ app.controller('beerController', function ($scope, $stateParams, beerFactory) {
 
     $scope.beer = $stateParams.beerParam;
 
+    //* Create a Review Form Template
+    var reviewForm = {
+        username: $scope.currentUser.username,
+        review: ""
+    };
+
+    $scope.temp = angular.copy(reviewForm);
+
     //* 6 - Add Beer Reviews
     $scope.addReview = function () {
         var newReview = {
-            username: $scope.currentUser.username,
+            username: this.temp.username,
             review: this.temp.review
         };
 
@@ -13,7 +21,7 @@ app.controller('beerController', function ($scope, $stateParams, beerFactory) {
             .then(function (beer) {
                 $scope.beer = beer;
                 $scope.myForm.$setPristine();
-                $scope.temp.review = '';
+                $scope.temp = angular.copy(reviewForm);
             })
             .catch(function (error) {
                 console.log(error)
