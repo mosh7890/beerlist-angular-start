@@ -55,6 +55,13 @@ app.factory('beerFactory', function ($http) {
                 return angular.copy(response.data);
             });
     }
+    //* 8 - Get Current Beer on Refresh
+    var getBeer = function (beerID) {
+        return $http.get('/beers/' + beerID)
+            .then(function (response) {
+                return angular.copy(response.data);
+            });
+    }
 
     return {
         getBeerList: getBeerList,
@@ -64,5 +71,6 @@ app.factory('beerFactory', function ($http) {
         editBeer: editBeer,
         addReview: addReview,
         removeReview: removeReview,
+        getBeer: getBeer
     };
 });

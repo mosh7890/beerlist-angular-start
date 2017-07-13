@@ -42,4 +42,18 @@ app.controller('beerController', function ($scope, $stateParams, beerFactory) {
                 alert(error.data.message);
             });
     }
+
+    //* 8 - Get Current Beer on Refresh
+    beerFactory.getBeer($stateParams.beerID)
+        .then(function (beer) {
+            $scope.beer = beer;
+        })
+        .catch(function (error) {
+            console.log(error)
+        });
+
+    //* Returns True or False
+    $scope.testUser = function (currentUser, review) {
+        return currentUser.isAdmin || (currentUser.username === review.username)
+    }
 });

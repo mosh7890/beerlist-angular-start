@@ -24,7 +24,7 @@ var ensureAuthenticated = function (req, res, next) {
 };
 
 var ensureAdmin = function (req, res, next) {
-    if (req.user.admin) {
+    if (req.isAuthenticated() && req.user.admin) {
         return next();
     } else {
         return res.status('401').send({
@@ -36,7 +36,7 @@ var ensureAdmin = function (req, res, next) {
 var ensureIsCurrentUserReview = function (req, res, next) {
     Beer.findById(req.params.beerID, function (err, data) {
         if (err) {}
-        if (req.user.username === data.reviews.id(req.params.reviewID).username || req.user.admin) {
+        if (req.isAuthenticated() && (req.user.username === data.reviews.id(req.params.reviewID).username || req.user.admin)) {
             return next();
         } else {
             return res.status('401').send({
@@ -54,13 +54,13 @@ router.get('/', function (req, res, next) {
 });
 
 //* 2 - Add a Beer
-router.post('/', ensureAuthenticated, ensureAdmin, function (req, res, next) {
+router.post('/', ensureAdmin, function (req, res, next) {
     var myBeer = new Beer(req.body);
     myBeer.save(routeHandler(res, next));
 });
 
 //* 3 - Delete a Beer
-router.delete('/:beerID', ensureAuthenticated, ensureAdmin, function (req, res, next) {
+router.delete('/:beerID', ensureAdmin, function (req, res, next) {
     Beer.findByIdAndRemove(req.params.beerID, routeHandler(res, next));
 });
 
@@ -78,7 +78,7 @@ router.post('/:beerID/ratings', ensureAuthenticated, function (req, res, next) {
 });
 
 //* 5 - Update Beer Info (name, style, image, abv)
-router.put('/:beerID', ensureAuthenticated, ensureAdmin, function (req, res, next) {
+router.put('/:beerID', ensureAdmin, function (req, res, next) {
     var update = {
         $set: {
             name: req.body.name,
@@ -105,7 +105,7 @@ router.post('/:beerID/reviews', ensureAuthenticated, function (req, res, next) {
 });
 
 //* 7 - Delete Beer Reviews
-router.delete('/:beerID/reviews/:reviewID', ensureAuthenticated, ensureIsCurrentUserReview, function (req, res, next) {
+router.delete('/:beerID/reviews/:reviewID', ensureIsCurrentUserReview, function (req, res, next) {
     var update = {
         $pull: {
             reviews: {
@@ -116,6 +116,11 @@ router.delete('/:beerID/reviews/:reviewID', ensureAuthenticated, ensureIsCurrent
     Beer.findByIdAndUpdate(req.params.beerID, update, {
         new: true
     }, routeHandler(res, next));
+});
+
+//* 8 - Get Current Beer on Refresh
+router.get('/:beerID', function (req, res, next) {
+    Beer.findById(req.params.beerID, routeHandler(res, next));
 });
 
 module.exports = router;

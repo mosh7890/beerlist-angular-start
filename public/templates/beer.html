@@ -24,7 +24,7 @@
         <ul class='reviews'>
             <li ng-repeat="review in beer.reviews track by $index">{{review.username}}:
                 <p class='beerDataP'>{{review.review}}</p>
-                <button type="button" class="btn btn-danger removeBeerButton" ng-show="currentUser.username" ng-click="removeReview(); $event.stopPropagation()">Remove</button>
+                <button type="button" class="btn btn-danger removeBeerButton" ng-show="testUser(currentUser, review)" ng-click="removeReview(); $event.stopPropagation()">Remove</button>
             </li>
         </ul>
     </div>
