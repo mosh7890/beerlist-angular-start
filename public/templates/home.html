@@ -2,7 +2,7 @@
     <h1 class="text-center">BeerList</h1>
     <div class="page-header">
     </div>
-    <form name='myForm' ng-show="currentUser.username" ng-submit="addBeer()">
+    <form name='myForm' ng-show="currentUser.isAdmin" ng-submit="addBeer()">
         <h1 class='text-center'>Add a New Beer</h1>
         <div class="form-group">
             <input type="text" name='myInput' class="form-control" placeholder="Beer Name" ng-model="temp.name"></input>
@@ -24,17 +24,17 @@
     <button type="button" class="btn btn-outline-default sortBeersButton" ng-click="sortBeers()">Sort Beers</button>
     <div class='beers text-center'>
         <div class="beer" ng-repeat="beer in beerList track by $index">
-            <div class="beerImage" ng-click="currentUser.username && editBeerShow()">
+            <div class="beerImage" ng-click="currentUser.isAdmin && editBeerShow()">
                 <img ng-src="{{beer.image_url}}" />
             </div>
             <div class="beerData">
                 <div>
                     <h3>Name:</h3>
-                    <p class='beerDataP'>{{beer.name}},</p>
+                    <p class='beerDataP'>{{beer.name}}.</p>
                     <h3>Style:</h3>
-                    <p class='beerDataP'>{{beer.style}},</p>
+                    <p class='beerDataP'>{{beer.style}}.</p>
                     <h3>ABV:</h3>
-                    <p class='beerDataP'>{{beer.abv}}</p>
+                    <p class='beerDataP'>{{beer.abv}}.</p>
                 </div>
                 <div>
                     <h3>Average Rating:</h3>
@@ -43,7 +43,7 @@
                 <button type="button" class="btn btn-primary addBeerRatingButton" ng-show="currentUser.username" ng-click="addRating(); $event.stopPropagation()">Add Rating</button>
                 <a class="btn btn-primary" ui-sref="beer({beerID: beer._id, beerParam: beer})">Reviews</a>
             </div>
-            <button type="button" class="btn btn-danger removeBeerButton" ng-show="currentUser.username" ng-click="removeBeer(); $event.stopPropagation()">Remove</button>
+            <button type="button" class="btn btn-danger removeBeerButton" ng-show="currentUser.isAdmin" ng-click="removeBeer(); $event.stopPropagation()">Remove</button>
         </div>
     </div>
 </div>

@@ -23,6 +23,29 @@ var ensureAuthenticated = function (req, res, next) {
     }
 };
 
+var ensureAdmin = function (req, res, next) {
+    if (req.user.admin) {
+        return next();
+    } else {
+        return res.status('401').send({
+            message: 'Unauthorized'
+        });
+    }
+};
+
+var ensureIsCurrentUserReview = function (req, res, next) {
+    Beer.findById(req.params.beerID, function (err, data) {
+        if (err) {}
+        if (req.user.username === data.reviews.id(req.params.reviewID).username || req.user.admin) {
+            return next();
+        } else {
+            return res.status('401').send({
+                message: 'Unauthorized'
+            });
+        }
+    });
+}
+
 //*  The /Beer routes Go Here
 
 //* 1 - Get All Beers
@@ -31,13 +54,13 @@ router.get('/', function (req, res, next) {
 });
 
 //* 2 - Add a Beer
-router.post('/', ensureAuthenticated, function (req, res, next) {
+router.post('/', ensureAuthenticated, ensureAdmin, function (req, res, next) {
     var myBeer = new Beer(req.body);
     myBeer.save(routeHandler(res, next));
 });
 
 //* 3 - Delete a Beer
-router.delete('/:beerID', ensureAuthenticated, function (req, res, next) {
+router.delete('/:beerID', ensureAuthenticated, ensureAdmin, function (req, res, next) {
     Beer.findByIdAndRemove(req.params.beerID, routeHandler(res, next));
 });
 
@@ -55,7 +78,7 @@ router.post('/:beerID/ratings', ensureAuthenticated, function (req, res, next) {
 });
 
 //* 5 - Update Beer Info (name, style, image, abv)
-router.put('/:beerID', ensureAuthenticated, function (req, res, next) {
+router.put('/:beerID', ensureAuthenticated, ensureAdmin, function (req, res, next) {
     var update = {
         $set: {
             name: req.body.name,
@@ -82,7 +105,7 @@ router.post('/:beerID/reviews', ensureAuthenticated, function (req, res, next) {
 });
 
 //* 7 - Delete Beer Reviews
-router.delete('/:beerID/reviews/:reviewID', ensureAuthenticated, function (req, res, next) {
+router.delete('/:beerID/reviews/:reviewID', ensureAuthenticated, ensureIsCurrentUserReview, function (req, res, next) {
     var update = {
         $pull: {
             reviews: {

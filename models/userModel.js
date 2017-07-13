@@ -4,7 +4,8 @@ var plm = require('passport-local-mongoose');
 
 var UserSchema = new Schema({
     username: String,
-    password: String
+    password: String,
+    admin: Boolean
 });
 
 UserSchema.plugin(plm);
