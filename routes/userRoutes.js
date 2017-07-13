@@ -59,13 +59,13 @@ router.get('/logout', function (req, res) {
 });
 
 //* 5 - Get Users
-router.get('/', function (req, res) {
-    User.find(function (err, data) {
-        if (err) {
-            return next(err);
-        }
-        res.send(data);
-    });
-})
+// router.get('/', function (req, res) {
+//     User.find(function (err, data) {
+//         if (err) {
+//             return next(err);
+//         }
+//         res.send(data);
+//     });
+// })
 
 module.exports = router;
